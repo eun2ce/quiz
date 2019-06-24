@@ -1,6 +1,6 @@
 # quiz
 
-See the my code for a hint.
+See the code for a hint.
 
 ## build
 
