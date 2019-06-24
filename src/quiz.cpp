@@ -19,12 +19,43 @@ void quiz::set(string t) {
    printhex(&data, data.size());
 }
 
-void quiz::chapone(string t) {
+void quiz::chapone(string ansr) {
+   require_auth(_self);
+   std::string shash = "a608cabd9188bee422c32f81183da2bfc42cbc135d9d131fdcbdeb473e2fbade";
+
+   infos idx(_self, _self.value);
+
+   auto hash = eosio::sha256(reinterpret_cast<const char*>(ansr.data()), ansr.size());
+   auto bytes = hash.extract_as_byte_array();
+   auto data = to_hex(bytes.data(), bytes.size());
+
+   check(shash.compare(data) == 0, "try again");
+   idx.emplace(_self, [&](auto& n){
+         n.name = "chapone"_n;
+         n.answer = ansr;
+   });
+
+   print(ansr," you for being by my side");
+}
+
+void quiz::chaptwo(string ansr) {
+   require_auth(_self);
    std::string shash = "489f719cadf919094ddb38e7654de153ac33c02febb5de91e5345cbe372cf4a0";
 
-   auto hash = eosio::sha256(reinterpret_cast<const char*>(t.data()), t.size());
-   auto data = to_hex(hash.data(), hash.size());
+   infos idx(_self, _self.value);
+   auto it = idx.find("chapone"_n.value);
 
-   check(shash.compare(data), "got-chya got-chya");
-   print("I hope you are all ", t);
+   check(it != idx.end(), "the chapone was not solved");
+
+   auto hash = eosio::sha256(reinterpret_cast<const char*>(ansr.data()), ansr.size());
+   auto bytes = hash.extract_as_byte_array();
+   auto data = to_hex(bytes.data(), bytes.size());
+
+   check(shash.compare(data) == 0, "try again");
+
+   idx.emplace(_self, [&](auto& n){
+         n.name = "chaptwo"_n;
+         n.answer = ansr;
+   });
+   print("I hope you are all ", ansr);
 }

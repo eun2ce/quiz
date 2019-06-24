@@ -1,6 +1,6 @@
 # quiz
 
-See the readme for a hint.
+See the my code for a hint.
 
 ## build
 
@@ -17,10 +17,6 @@ $ cleos set contract eosio ./build/quiz/. -p eosio
 ## Using
 
 - chapone `cleos push action eosio chapone '["answer"]' -p eosio`
-
-## Hints
-
-- chapone 811-61-62-0
 
 ## contributor
 
